@@ -20,7 +20,8 @@ public class App {
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        WordFilter filter = new WordFilter(new SystemOutStringSink());
+        HashSetStringSink sink = new HashSetStringSink();
+        WordFilter filter = new WordFilter(sink);
         int character;
 
         try {
@@ -31,6 +32,10 @@ public class App {
             /* do nothing */
         } finally {
             filter.feedCurrentWord();
+
+            for (String word: sink.strings) {
+                System.out.println(word);
+            }
         }
     }
 }
