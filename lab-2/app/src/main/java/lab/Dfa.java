@@ -36,6 +36,7 @@ public class Dfa {
 
         builder.append(inputAlphabetLength);
         builder.append("\n");
+        //FIXME
         builder.append(transitions.size());
         builder.append("\n");
         builder.append(initialState);

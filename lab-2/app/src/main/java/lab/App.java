@@ -3,12 +3,24 @@
  */
 package lab;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import java.nio.file.*;
 
+public class App {
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        if (args.length < 1) {
+            System.out.println("Please provide a filename");
+            return;
+        }
+
+        String nfaString;
+
+        try {
+            nfaString = Files.readString(Path.of(args[0]));
+        } catch (Exception e) {
+            System.out.println("The file does not exist");
+            return;
+        }
+
+        System.out.println(Nfa.fromString(nfaString).toDfa().toString());
     }
 }
