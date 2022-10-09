@@ -66,7 +66,7 @@ public class Dfa {
             builder.append(finalState);
         }
 
-        builder.append("\n");
+        builder.append("\n\n");
 
         for (String state: transitions.keySet()) {
             for (Character character: transitions.get(state).keySet()) {
