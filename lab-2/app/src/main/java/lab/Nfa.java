@@ -110,7 +110,6 @@ public class Nfa {
 
             for (String subState: state) {
                 builder.append(subState);
-                builder.append("'");
             }
 
             stringTransitions.put(
@@ -123,7 +122,6 @@ public class Nfa {
 
                 for (String subState: nextState) {
                     nextBuilder.append(subState);
-                    nextBuilder.append("'");
                 }
 
                 stringTransitions
@@ -141,7 +139,6 @@ public class Nfa {
 
                     for (String subState: state) {
                         builder.append(subState);
-                        builder.append("'");
                     }
 
                     finalStates.add(builder.toString());
@@ -150,7 +147,7 @@ public class Nfa {
         }
 
         return new Dfa(
-            stringTransitions, finalStates, this.initialState + "'", inputAlphabetLength
+            stringTransitions, finalStates, this.initialState, inputAlphabetLength
         );
     }
 }
