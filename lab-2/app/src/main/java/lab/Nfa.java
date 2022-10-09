@@ -26,7 +26,7 @@ public class Nfa {
     public static Nfa fromString(String string) {
         Scanner scanner = new Scanner(string);
         int inputAlphabetLength = scanner.nextInt();
-        int transitionsSize = scanner.nextInt();
+        int stateCount = scanner.nextInt();
         String initialState = scanner.next();
         int finalStatesSize = scanner.nextInt();
         HashSet<String> finalStates = new HashSet<String>();
@@ -37,7 +37,7 @@ public class Nfa {
 
         ArrayList<NfaTransition> transitions = new ArrayList<NfaTransition>();
 
-        for (int i = 0; i < transitionsSize; ++i) {
+        while (scanner.hasNext()) {
             transitions.add(
                 new NfaTransition(scanner.next(), scanner.next().charAt(0), scanner.next())
             );

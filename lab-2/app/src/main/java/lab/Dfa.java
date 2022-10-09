@@ -19,6 +19,25 @@ public class Dfa {
         this.finalStates = finalStates;
         this.initialState = initialState;
         this.inputAlphabetLength = inputAlphabetLength;
+
+        boolean hasBottom = false;
+
+        for (char c = 'a'; c < 'a' + inputAlphabetLength; ++c) {
+            for (var entry: transitions.entrySet()) {
+                if (!entry.getValue().containsKey(c)) {
+                    entry.getValue().put(c, "_");
+                    hasBottom = true;
+                }
+            }
+        }
+
+        if (hasBottom) {
+            transitions.put("_", new HashMap<Character, String>());
+
+            for (char c = 'a'; c < 'a' + inputAlphabetLength; ++c) {
+                transitions.get("_").put(c, "_");
+            }
+        }
     }
 
     public boolean isAccepted(String word) {
@@ -36,7 +55,6 @@ public class Dfa {
 
         builder.append(inputAlphabetLength);
         builder.append("\n");
-        //FIXME
         builder.append(transitions.size());
         builder.append("\n");
         builder.append(initialState);
