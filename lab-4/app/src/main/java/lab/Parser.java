@@ -1,15 +1,26 @@
 package lab;
 
+import java.util.HashSet;
+import java.util.Arrays;
+
 public class Parser {
     private final String input;
+    private final HashSet<String> keywords;
+    private final StringBuilder builder;
     private int position;
     private String state;
     private Lexema lexema;
-    private StringBuilder builder;
 
     public Parser(String input) {
         this.input = input;
-        this.builder = new StringBuilder();
+        builder = new StringBuilder();
+        keywords = new HashSet<String>(Arrays.asList(
+                "break", "case", "catch", "class", "const", "continue", "debugger",
+                "default", "delete", "do", "else", "export",
+                "extends", "false", "finally", "for", "function", "if",
+                "import", "in", "instanceof", "new", "null", "return", "static",
+                "super", "switch", "this", "throw",
+                "true", "try", "typeof", "var", "void", "while", "with", "yield"));
     }
 
     public int getPosition() {
@@ -32,6 +43,7 @@ public class Parser {
         while (lexema == null && hasNext()) {
             tryComment();
             tryString();
+            tryIdentifier();
             tryWhiteSpace();
 
             if (state == null && lexema == null) {
@@ -53,7 +65,7 @@ public class Parser {
             } else if (getChar() == '*') {
                 state = "/*";
             } else {
-                state = null;
+                lexema = new Lexema("operator", "/");
             }
         } else if (state == "//") {
             if (getChar() == '\n') {
@@ -111,6 +123,29 @@ public class Parser {
         } else if (state == "single-quote-escape") {
             builder.append(getChar());
             state = "single-quote";
+        }
+    }
+
+    private void tryIdentifier() {
+        if (state == null &&
+                (Character.isLetter(getChar()) || getChar() == '_' || getChar() == '$')) {
+            builder.append(getChar());
+            state = "identifier";
+        } else if (state == "identifier") {
+            if ((Character.isLetterOrDigit(getChar())
+                    || getChar() == '_' || getChar() == '$')) {
+                builder.append(getChar());
+            } else {
+                String value = builder.toString();
+
+                if (keywords.contains(value)) {
+                    lexema = new Lexema("reserved word", value);
+                } else {
+                    lexema = new Lexema("identifier", value);
+                }
+
+                --position;
+            }
         }
     }
 
