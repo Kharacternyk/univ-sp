@@ -5,6 +5,7 @@
       devShell = mkShell {
         packages = [
           jdk17_headless
+          gradle
         ];
       };
     }
